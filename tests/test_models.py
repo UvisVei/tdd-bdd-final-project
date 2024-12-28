@@ -139,7 +139,7 @@ class TestProductModel(unittest.TestCase):
         self.assertEqual(products[0].id, orig_id)
         self.assertEqual(products[0].description, "Changing the description of this product.")
 
-    def test_update_a_product(self):
+    def test_delete_a_product(self):
         """It should Delete a Product"""
         product = ProductFactory()
         product.create()
@@ -169,10 +169,42 @@ class TestProductModel(unittest.TestCase):
         products = Product.all()
         first_product_name = products[0].name
         count = 0
-        for i in products:
-            if i.name == first_product_name:
+        for item in products:
+            if item.name == first_product_name:
                 count += 1
         found = Product.find_by_name(first_product_name)
         self.assertEqual(found.count(), count)
-        for i in found:
-            self.assertEqual(i.name, first_product_name)
+        for item in found:
+            self.assertEqual(item.name, first_product_name)
+
+    def test_find_product_by_availability(self):
+        """It should Find Product by Availability in the database"""
+        for _ in range(10):
+            product = ProductFactory()
+            product.create()
+        products = Product.all()
+        first_product_availability = products[0].available
+        count = 0
+        for item in products:
+            if item.available == first_product_availability:
+                count += 1
+        found = Product.find_by_availability(first_product_availability)
+        self.assertEqual(found.count(), count)
+        for item in found:
+            self.assertEqual(item.available, first_product_availability)
+
+    def test_find_product_by_category(self):
+        """It should Find Product by Category in the database"""
+        for _ in range(10):
+            product = ProductFactory()
+            product.create()
+        products = Product.all()
+        first_product_category = products[0].category
+        count = 0
+        for item in products:
+            if item.category == first_product_category:
+                count += 1
+        found = Product.find_by_category(first_product_category)
+        self.assertEqual(found.count(), count)
+        for item in found:
+            self.assertEqual(item.category, first_product_category)
